@@ -41,32 +41,7 @@ class Day4a
     cards
   end
 
-  def self.single_winner(card)
-    row_count = card.count
-    marked_positions = {}
-    for i in 0..row_count-1
-      marked_positions[i] = 0
-    end
-
-    # check for horizontal Bingo
-    card.each do |row|
-      if row.all? {|num| num == -1}
-        return true
-      end
-
-      # check for vertical Bingo
-      card.each_index do |row_num|
-        card[row_num].each_index do |ind|
-          if card[row_num][ind] == -1
-            marked_positions[ind] += 1
-          end
-        end
-      end
-      marked_positions.any? {|position, quantity| quantity == row_count}
-    end
-  end
-
-  def self.winner(cards)
+  def self.single_winner(cards)
     cards.each do |card_num, card|
       row_count = card.count
       marked_positions = {}
@@ -96,6 +71,41 @@ class Day4a
     nil
   end
 
+  def self.all_winners(cards)
+    winners = []
+
+    cards.each do |card_num, card|
+      row_count = card.count
+      marked_positions = {}
+      for i in 0..row_count-1
+        marked_positions[i] = 0
+      end
+
+      # check for horizontal Bingo
+      card.each do |row|
+        if row.all? {|num| num == -1}
+          winners << card_num
+        end
+      end
+
+      # check for vertical Bingo
+      card.each_index do |row_num|
+        card[row_num].each_index do |ind|
+          if card[row_num][ind] == -1
+            marked_positions[ind] += 1
+          end
+        end
+      end
+      if marked_positions.any? {|position, quantity| quantity == row_count}
+        winners << card_num
+      end
+    end
+    if winners.size > 0
+      return winners
+    end
+    false
+  end
+
   def self.sum_unmarked(card)
     sum = 0
     card.each do |row|
@@ -114,7 +124,7 @@ class Day4a
   end
 
   def self.draw_until_win(cards, call_numbers, call_index = 0)
-    until card_num = winner(cards) do
+    until card_num = single_winner(cards) do
       cards = draw_number(call_numbers, call_index, cards)
       call_index += 1
     end
@@ -128,8 +138,10 @@ class Day4a
     until cards.size == 1 do
       cards = draw_number(call_numbers, call_index, cards)
       call_index += 1
-      if card_num = winner(cards)
-        cards.delete(card_num)
+      if winners = all_winners(cards)
+        winners.each do |card_num|
+          cards.delete(card_num)
+        end
       end
     end
     cards, card_num, call_index = draw_until_win(cards, call_numbers, call_index)
@@ -153,4 +165,4 @@ class Day4a
 
 end
 
-#puts Day4a.get_answer_part_2('../data/JoDay4.txt')
+puts Day4a.get_answer_part_2('../data/JoDay4.txt')

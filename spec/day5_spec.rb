@@ -16,5 +16,9 @@ describe 'Day5' do
     it 'lines overlap at 5 points' do
       expect(Day5.count_overlaps).to eq(5)
     end
+
+    it 'populates grid' do
+      expect(Day5.populate_grid(dataset))
+    end
   end
 end

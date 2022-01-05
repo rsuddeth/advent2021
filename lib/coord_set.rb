@@ -31,5 +31,6 @@ class CoordSet
         points << [@x1,y]
       end
     end
+    points
   end
 end

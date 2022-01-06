@@ -4,6 +4,7 @@ require_relative '../lib/day5'
 describe 'Day5' do
   context 'part 1' do
     dataset = Day5.load_data('data/day5example.txt')
+    grid = Day5.populate_grid(dataset)
 
     it 'loads 10 sets of points' do
       expect(dataset.size).to eq(10)
@@ -13,12 +14,12 @@ describe 'Day5' do
       expect(dataset[0].class).to eq(CoordSet)
     end
 
-    it 'lines overlap at 5 points' do
-      expect(Day5.count_overlaps).to eq(5)
+    it 'populates grid' do
+      expect(grid)
     end
 
-    it 'populates grid' do
-      expect(Day5.populate_grid(dataset))
+    it 'lines overlap at 5 points' do
+      expect(Day5.count_overlaps(grid)).to eq(5)
     end
   end
 end

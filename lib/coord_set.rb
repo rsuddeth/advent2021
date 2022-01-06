@@ -20,14 +20,18 @@ class CoordSet
     @x1 == @x2
   end
 
+  def is_diagonal
+    
+  end
+
   def all_line_points
     points = []
     if is_horizontal
-      for x in @x1..@x2 do
+      for x in [@x1, @x2].min .. [@x1, @x2].max do
         points << [x,@y1]
       end
     elsif is_vertical
-      for y in @y1..@y2 do
+      for y in [@y1, @y2].min .. [@y1, @y2].max do
         points << [@x1,y]
       end
     end

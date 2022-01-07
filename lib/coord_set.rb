@@ -21,7 +21,11 @@ class CoordSet
   end
 
   def is_diagonal
-    
+    (get_slope).abs == 1
+  end
+
+  def get_slope
+    (@y1 - @y2) / (@x1 - @x2)
   end
 
   def all_line_points
@@ -33,6 +37,20 @@ class CoordSet
     elsif is_vertical
       for y in [@y1, @y2].min .. [@y1, @y2].max do
         points << [@x1,y]
+      end
+    elsif is_diagonal
+      if get_slope > 0
+        y = [@y1, @y2].min
+        for x in [@x1, @x2].min .. [@x1, @x2].max do
+          points << [x,y]
+          y += 1
+        end
+      else
+        y = [@y1, @y2].max
+        for x in [@x1, @x2].min .. [@x1, @x2].max do
+          points << [x,y]
+          y -= 1
+        end
       end
     end
     points

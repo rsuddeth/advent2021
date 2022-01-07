@@ -18,8 +18,8 @@ describe 'Day5' do
       expect(grid)
     end
 
-    it 'lines overlap at 5 points' do
-      expect(Day5.count_overlaps(grid)).to eq(5)
+    it 'lines overlap at 12 points' do
+      expect(Day5.count_overlaps(grid)).to eq(12)
     end
   end
 end

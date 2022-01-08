@@ -29,4 +29,4 @@ class Day6
   end
 end
 
-puts Day6.load_data('data/JoDay6.txt')
+puts Day6.add_days(Day6.load_data('../data/JoDay6.txt'), 80).size

@@ -1,32 +1,30 @@
 
-
 class Day6
   def self.load_data(file)
     raw = File.read(file)
     raw.split(',').map(&:to_i)
   end
 
-  def self.add_days(fish_arr, days)
-    days.times {fish_arr = age_fish(fish_arr)}
-    fish_arr
-  end
-
-  def self.age_fish(fish_arr)
-    new_fish = []
-    baby_fish = 0
-
+  def self.calc_fish(fish_arr, days)
+    # 9 buckets to hold the count of fish with each of the 9 possible numbers
+    buckets = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     fish_arr.each do |fish|
-      if fish > 0
-        new_fish << fish - 1
-      elsif fish == 0
-        new_fish << 6
-        baby_fish += 1
-      end
+      buckets[fish] = buckets[fish] + 1
     end
 
-    baby_fish.times { new_fish << 8 }
-    new_fish
+    days.times do
+      # The zeros are about to pop. Let's save their count
+      new_fish = buckets[0]
+      (1..8).each do |i|
+        # Put each of the counts into a new, lower bucket
+        buckets[i - 1] = buckets[i]
+      end
+      # Each of the zeros will become a six...
+      buckets[6] = buckets[6] + new_fish
+      # And they'll form a new 8 bucket
+      buckets[8] = new_fish
+    end
+    puts(buckets.sum)
+    buckets.sum
   end
 end
-
-#puts Day6.add_days(Day6.load_data('../data/JoDay6.txt'), 80).size
